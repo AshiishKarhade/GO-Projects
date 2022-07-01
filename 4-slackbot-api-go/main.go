@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+
 	"github.com/shomali11/slacker"
 )
 
@@ -17,14 +18,20 @@ func main() {
 
 	go printCommandEvents(bot.CommandEvents())
 
-	bot.Command("my year of birth is <year>", &slacker.CommandDefinition) {
-		Description: "year of birth calculator", 
-		Example : "my year of birth is 1998",
-		Handler : func(botCtcx slacker.BotContext, request slacker.Request, response slacker.ResponseWriter) {
+	bot.Command("my year of birth is <year>", &slacker.CommandDefinition{
+		Description: "year of birth calculator",
+		Example:     "my year of birth is 1998",
+		Handler: func(botCtcx slacker.BotContext, request slacker.Request, response slacker.ResponseWriter) {
 			year := request.Param("year")
 			yob, err := strconv.Atoi(year)
-		}
-	}
+			if err != nil {
+				fmt.Println("error")
+			}
+			age := 2022 - yob
+			r := fmt.Sprintf("age s is %d", age)
+			response.Reply(r)
+		},
+	})
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
