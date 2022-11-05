@@ -1,6 +1,7 @@
 package router
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/AshiishKarhade/GO-Projects/go-postgres-stocksapi/middleware"
@@ -32,5 +33,5 @@ func Router() *mux.Router {
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-
+	json.NewEncoder(w).Encode("Welcome HOME!")
 }
