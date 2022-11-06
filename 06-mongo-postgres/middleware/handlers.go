@@ -10,6 +10,7 @@ import (
 	"os"
 	"strconv"
 
+	_ "github.com/lib/pq"
 	"github.com/AshiishKarhade/GO-Projects/go-postgres-stocksapi/models"
 )
 
@@ -190,7 +191,7 @@ func updateStock(id int64, stock models.Stock) int64 {
 	if err != nil {
 		log.Fatalf("Error: %v\n", err)
 	}
-	log.Fatalf("Total rows Affected: %v\n", rowsAffected)
+	log.Println("Total rows Affected: %v\n", rowsAffected)
 	return rowsAffected
 }
 
@@ -207,6 +208,6 @@ func deleteStock(id int64) int64 {
 	if err != nil {
 		log.Fatalf("Error: %v\n", err)
 	}
-	log.Fatalf("Total rows Affected: %v\n", rowsAffected)
+	log.Println("Total rows Affected: %v\n", rowsAffected)
 	return rowsAffected
 }
