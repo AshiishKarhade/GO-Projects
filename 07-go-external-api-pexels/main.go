@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/AshiishKarhade/GO-Projects/go-external-api/models"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
@@ -13,49 +14,9 @@ const (
 	VideoApi = "https://api.pexels.com/videos"
 )
 
-type Client struct {
-	Token          string
-	hc             http.Client
-	RemainingTimes int32
-}
-
-func NewClient(token string) *Client {
+func NewClient(token string) *models.Client {
 	c := http.Client{}
-	return &Client{Token: token, hc: c}
-}
-
-type Photo struct {
-	Id              int32       `json:"id"`
-	Width           int32       `json:"width"`
-	Height          int32       `json:"height"`
-	Url             string      `json:"url"`
-	Photographer    string      `json:"photographer"`
-	PhotographerUrl string      `json:"photographer_url"`
-	Src             PhotoSource `json:"src"`
-}
-
-type PhotoSource struct {
-	Original  string `json:"original"`
-	Large     string `json:"large"`
-	Large2x   string `json:"large2x"`
-	Medium    string `json:"medium"`
-	Small     string `json:"small"`
-	Portrait  string `json:"portrait"`
-	Square    string `json:"square"`
-	Landscape string `json:"landscape"`
-	Tiny      string `json:"tiny"`
-}
-
-type Search struct {
-	Page         int32   `json:"page"`
-	PerPage      int32   `json:"per_page"`
-	TotalResults int32   `json:"total_results"`
-	NextPage     int32   `json:"next_page"`
-	Photos       []Photo `json:"photos"`
-}
-
-func (c Client) SearchPhotos(query string, perpage int, page int) (*SearchResult, error) {
-
+	return &models.Client{Token: token, Hc: c}
 }
 
 func main() {
