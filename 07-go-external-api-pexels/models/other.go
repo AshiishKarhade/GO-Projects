@@ -29,3 +29,10 @@ type SearchResult struct {
 	NextPage     int32   `json:"next_page"`
 	Photos       []Photo `json:"photos"`
 }
+
+type CuratedResult struct {
+	Page         int32   `json:"page"`
+	PerPage      int32   `json:"per_page"`
+	NextPage	 int32   `json:"next_page"`
+	Photos       []Photo `json:"photos"`
+}
