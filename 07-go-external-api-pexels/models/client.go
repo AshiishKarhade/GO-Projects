@@ -5,11 +5,15 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math/rand"
 	"net/http"
 	"strconv"
 )
 
-const PhotoApi = "https://api.pexels.com/v1"
+const (
+	PhotoApi = "https://api.pexels.com/v1"
+	VideoApi = "https://api.pexels.com/videos"
+)
 
 type Client struct {
 	Token          string
@@ -95,5 +99,68 @@ func (c *Client) GetPhoto(id int32) (*Photo, error) {
 	return &result, nil
 }
 
+func (c *Client) GetRandomPhoto() (*Photo, error) {
+	random := rand.Intn(1001)
+	result, err := c.CuratedPhotos(1, random)
+	if err == nil && len(result.Photos) == 1 {
+		return &result.Photos[0], nil
+	}
+	return nil, err
+}
 
-func (c )
+func (c *Client) SearchVideo(query string, perPage int, page int) (*VideoSearchResult, error) {
+	url := fmt.Sprintf(VideoApi+".search?query=%s&per_page=%d&page=%d", query, perPage, page)
+	response, err := c.requestWithAuth("GET", url)
+	defer response.Body.Close()
+
+	if err != nil {
+		return nil, err
+	}
+	data, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var result VideoSearchResult
+	err = json.Unmarshal(data, &result)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return &result, nil
+}
+
+func (c *Client) PopularVideo(perPage, page int) (*PopularVideo, error) {
+	url := fmt.Sprintf(VideoApi+"/popular?per_page=%d&page=%d", perPage, page)
+	response, err := c.requestWithAuth("GET", url)
+	defer response.Body.Close()
+
+	if err != nil {
+		return nil, err
+	}
+	data, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var result PopularVideo
+	err = json.Unmarshal(data, &result)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return &result, nil
+}
+
+func (c *Client) GetRandomVideo() (*Video, error) {
+	random := rand.Intn(1001)
+	result, err := c.PopularVideo(1, random)
+	if err == nil && len(result.Videos) == 1 {
+		return &result.Videos[0], nil
+	}
+	return nil, err
+}
+
+func (c *Client) GetRemainingRequestsInaMonth() int32 {
+	return c.RemainingTimes
+}
