@@ -74,5 +74,26 @@ func (c *Client) CuratedPhotos(perpage int, page int) (*CuratedResult, error) {
 }
 
 func (c *Client) GetPhoto(id int32) (*Photo, error) {
-	url := fmt.Sprintf(PhotoApi+"/curated?per_page=%d&page=%d", perpage, page)
+	url := fmt.Sprintf(PhotoApi+"/photos/%d", id)
+	response, err := c.requestWithAuth("GET", url)
+	defer response.Body.Close()
+
+	if err != nil {
+		return nil, err
+	}
+	data, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var result Photo
+	err = json.Unmarshal(data, &result)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return &result, nil
 }
+
+
+func (c )
