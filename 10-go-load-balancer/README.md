@@ -1,6 +1,9 @@
 # GO - Load Balancer
 
 ```mermaid
-flowchart LR
-    id1{Load Balancer} --> id2(SERVER-1) & id2(SERVER-2) & id2(SERVER-3)
+graph LR
+C{LOAD BALANCER}
+C --> D[fa:fa-server Server - 1]
+C --> E[fa:fa-server Server - 2]
+C --> F[fa:fa-server Server - 3]
 ```
